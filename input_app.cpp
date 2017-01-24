@@ -26,6 +26,9 @@ void InputApp::Init()
 		input_manager_->touch_manager()->EnablePanel(0);
 
 	InitFont();
+	sprite1.set_position(300.0f, 200.0f, 0.0f);
+	sprite1.set_width(32.0f);
+	sprite1.set_height(32.0f);
 }
 
 void InputApp::CleanUp()
@@ -43,6 +46,13 @@ bool InputApp::Update(float frame_time)
 {
 	fps_ = 1.0f / frame_time;
 
+	gef::Vector4 sprite_position = sprite1.position();
+
+	float pos_x = sprite_position.x();
+	float pos_y = sprite_position.y();
+
+	sprite1.set_position(pos_x, pos_y, 0);
+
 	if (input_manager_)
 	{
 		input_manager_->Update();
@@ -58,6 +68,8 @@ void InputApp::Render()
 	sprite_renderer_->Begin();
 	DrawHUD();
 	sprite_renderer_->End();
+
+	sprite_renderer_->DrawSprite(sprite1);
 }
 void InputApp::InitFont()
 {
@@ -107,7 +119,7 @@ void InputApp::ProcessTouchInput()
 
 					// do any processing for a new touch here
 					// we're just going to record the position of the touch
-					touch_position_ = touch->position;
+					 touch_position_ = touch->position;
 				}
 			}
 			else if (active_touch_id_ == touch->id)
@@ -118,6 +130,7 @@ void InputApp::ProcessTouchInput()
 					// update an active touch here
 					// we're just going to record the position of the touch
 					touch_position_ = touch->position;
+					sprite1.set_colour(0xFF0000FF);
 				}
 				else if (touch->type == gef::TT_RELEASED)
 				{
@@ -125,6 +138,7 @@ void InputApp::ProcessTouchInput()
 					// perform any actions that need to happen when a touch is released here
 					// we're not doing anything here apart from resetting the active touch id
 					active_touch_id_ = -1;
+					sprite1.set_colour(0xFF00FF00);
 				}
 			}
 		}
